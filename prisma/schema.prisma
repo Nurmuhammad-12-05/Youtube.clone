@@ -1,0 +1,175 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+  USER
+}
+
+model User {
+  id String @id @default(uuid())
+  email String? @db.VarChar(50) @unique
+  username String @db.VarChar(50) @unique
+  phone_number String @db.VarChar(20) @unique
+  password String
+  firstName String @db.VarChar(50)
+  lastName String @db.VarChar(50)
+  avatar String?
+  channelDescription String?
+  role Role @default(USER)
+  is_email_verified Boolean @default(false)
+  is_phone_verified Boolean @default(true)
+  is_Blocked Boolean @default(false)
+  blockedUntil DateTime?
+  loginAttempts Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  videos Video[]
+  comments Comment[]
+  likes Like[]
+  subscriptions Subscription[] @relation("UserSubscriptions")
+  subscribers Subscription[] @relation("UserSubscribers")
+  playlists Playlist[]
+
+  @@map("users")
+}
+
+
+
+enum VideoStatus {
+  UPLOADING
+  PROCESSING
+  PUBLISHED
+  PRIVATE
+  UNILISTED
+  DELETED
+}
+
+enum Visibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+model Video {
+  id String @id @default(uuid())
+  title String
+  description String?
+  thumbnail String?
+  videoUrl String
+  duration Int
+  fileSize BigInt 
+  resolution String
+  status VideoStatus @default(PROCESSING)
+  visibility Visibility @default(PUBLIC)
+  viewsCount BigInt @default(0)
+  likesCount Int @default(0)
+  dislikesCount Int @default(0)
+  createdAt DateTime @default(now())
+
+  authorId String
+  author User @relation(fields: [authorId],references: [id],onDelete: Cascade)
+  comments Comment[]
+  playlistVideos PlaylistVideo[]
+  likes Like[]
+
+  @@map("videos")
+}
+
+
+model Comment {
+  id String @id @default(uuid())
+  content String
+  likesCount Int @default(0)
+  createdAt DateTime @default(now())
+
+  authorId String
+  author User @relation(fields: [authorId],references: [id],onDelete: Cascade)
+  videoId String
+  video Video @relation(fields: [videoId],references: [id],onDelete: Cascade)
+  likes Like[]
+
+  @@map("comments")
+}
+
+
+
+model Subscription {
+  id String @id @default(uuid())
+  subscriptionId String
+  subscriber User @relation("UserSubscriptions",fields: [subscriptionId],references: [id],onDelete: Cascade)
+  channeId String
+  channel User @relation("UserSubscribers",fields: [channeId],references: [id],onDelete: Cascade)
+  notificationsEnabled Boolean @default(true)
+  createdAt DateTime @default(now())
+
+  @@unique([subscriptionId,channeId])
+
+  @@map("subscriptions")
+
+}
+
+
+
+model Playlist {
+  id String @id @default(uuid())
+  title String
+  description String?
+  visibility Visibility @default(PUBLIC)
+  createdAt DateTime @default(now())
+
+  authorId String
+  author User @relation(fields: [authorId],references: [id],onDelete: Cascade)
+  videos PlaylistVideo[]
+
+  @@map("playlists")
+}
+
+
+
+model PlaylistVideo {
+  id String @id @default(uuid())
+  position Int 
+  addedAt DateTime 
+  
+  playlistId String
+  playlist Playlist @relation(fields: [playlistId],references: [id],onDelete: Cascade)
+  videoId String
+  video Video @relation(fields: [videoId],references: [id],onDelete: Cascade)
+
+  @@unique([playlistId,videoId])
+
+  @@map("playlist_videos")
+}
+
+
+
+enum LikeType {
+  LIKE
+  DISLIKE
+}
+
+model Like {
+  id String @id @default(uuid())
+  type LikeType
+  createdAt DateTime @default(now())
+
+  userId String
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+  videoId String?
+  video Video? @relation(fields: [videoId],references: [id],onDelete: Cascade)
+  commentId String?
+  comment Comment? @relation(fields: [commentId],references: [id],onDelete: Cascade)
+
+  @@unique([userId,videoId,type,commentId])
+
+  @@map("likes")
+}
