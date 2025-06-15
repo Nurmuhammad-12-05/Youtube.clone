@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpException, ValidationPipe } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   try {
@@ -11,9 +12,13 @@ async function bootstrap() {
     app.useGlobalPipes(
       new ValidationPipe({ whitelist: true, transform: true }),
     );
+
+    app.use(cookieParser());
+
     await app.listen(process.env.PORT ?? 3000);
   } catch (error) {
-    throw new HttpException(error.message, error.statusCode);
+    console.error(error.message);
   }
 }
+
 bootstrap();
