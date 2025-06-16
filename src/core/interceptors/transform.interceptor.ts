@@ -17,9 +17,13 @@ class TransformInterceptor implements NestInterceptor {
   ): Observable<any> {
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
-    const handle = context.getHandler();
+    const handleFunction = context.getHandler();
+    const handleClass = context.getClass();
 
-    const isFreeResponse = this.reflector.get('isFreeResponse', handle);
+    const isFreeResponse = this.reflector.getAllAndOverride('isFreeResponse', [
+      handleClass,
+      handleFunction,
+    ]);
 
     const statusCode = response.statusCode;
 
