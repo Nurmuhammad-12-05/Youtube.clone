@@ -3,9 +3,16 @@ import { CoreModule } from './core/core.module';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import TransformInterceptor from './core/interceptors/transform.interceptor';
 import { AuthGuard } from './core/guards/auth.guard';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { VideosModule } from './modules/videos/videos.module';
+import { CommentsModule } from './modules/comments/comments.module';
+import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
+import { PlaylistModule } from './modules/playlist/playlist.module';
+import { LikesModule } from './modules/likes/likes.module';
 
 @Module({
-  imports: [CoreModule],
+  imports: [CoreModule, AuthModule, UsersModule, VideosModule, CommentsModule, SubscriptionsModule, PlaylistModule, LikesModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,
