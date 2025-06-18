@@ -29,7 +29,7 @@ export class OtpService {
     return token;
   }
 
-  async sedOtp(phone_number: string) {
+  async sendOtp(phone_number: string) {
     await this.otpSecurityService.checkIfTemporaryBlockedUser(phone_number);
 
     await this.checkOtpExisted(`user:${phone_number}`);

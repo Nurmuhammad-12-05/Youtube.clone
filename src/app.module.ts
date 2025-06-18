@@ -10,9 +10,10 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 import { PlaylistModule } from './modules/playlist/playlist.module';
 import { LikesModule } from './modules/likes/likes.module';
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
-  imports: [CoreModule, AuthModule, UsersModule, VideosModule, CommentsModule, SubscriptionsModule, PlaylistModule, LikesModule],
+  imports: [CoreModule, AuthModule, UsersModule, VideosModule, CommentsModule, SubscriptionsModule, PlaylistModule, LikesModule, ProfileModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,
