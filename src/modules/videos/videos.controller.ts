@@ -2,14 +2,17 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Put,
   Query,
   Req,
   Res,
   SetMetadata,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -19,6 +22,9 @@ import path from 'path';
 import { Request, Response } from 'express';
 import { v4 as uuid } from 'uuid';
 import { CreateVideoDto } from './dto/create.video';
+import { UpdateVideoDto } from './dto/update.video';
+import { RoleGuard } from 'src/core/guards/role.guard';
+import { VideoOwnerGuard } from 'src/core/guards/video.owner.guard';
 
 @Controller('/videos')
 @SetMetadata('isPublic', true)
@@ -26,6 +32,8 @@ export class VideosController {
   constructor(private readonly videoService: VideosService) {}
 
   @Post('/upload')
+  @UseGuards(RoleGuard)
+  @SetMetadata('role', ['USER', 'ADMIN', 'SUPERADMIN'])
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -52,6 +60,8 @@ export class VideosController {
   }
 
   @Get('/:id/stream')
+  @UseGuards(RoleGuard)
+  @SetMetadata('role', ['USER', 'ADMIN', 'SUPERADMIN'])
   async videoStream(
     @Param('id') id: string,
     @Query('quality') quality: string,
@@ -71,6 +81,8 @@ export class VideosController {
   }
 
   @Get('/:id/status')
+  @UseGuards(RoleGuard)
+  @SetMetadata('role', ['USER', 'ADMIN', 'SUPERADMIN'])
   async getVideoStatus(@Param('id') id: string) {
     const param = id;
 
@@ -80,11 +92,30 @@ export class VideosController {
   }
 
   @Get('/:id')
+  @UseGuards(RoleGuard)
+  @SetMetadata('role', ['USER', 'ADMIN', 'SUPERADMIN'])
   async getVideoDetails(@Param('id') id: string) {
     const param = id;
 
     const data = await this.videoService.getVideoDetails(id);
 
     return { data };
+  }
+
+  @Put('/:id')
+  @UseGuards(RoleGuard, VideoOwnerGuard)
+  @SetMetadata('role', ['USER', 'ADMIN', 'SUPERADMIN'])
+  async updateVideo(
+    @Body() updateVideo: UpdateVideoDto,
+    @Param('id') id: string,
+  ) {
+    return await this.videoService.updateVideo(updateVideo, id);
+  }
+
+  @Delete('/:id')
+  @UseGuards(RoleGuard, VideoOwnerGuard)
+  @SetMetadata('role', ['USER', 'ADMIN', 'SUPERADMIN'])
+  async deleteVideo(@Param('id') id: string) {
+    return await this.videoService.deleteVideo(id);
   }
 }

@@ -12,6 +12,7 @@ import VideoProcessingService from 'src/core/video.processing.service';
 import { CreateVideoDto } from './dto/create.video';
 import { PrismaService } from 'src/core/databases/prisma.service';
 import { VideoMetadata } from 'src/common/interfaces/interface';
+import { UpdateVideoDto } from './dto/update.video';
 
 @Injectable()
 export class VideosService {
@@ -283,5 +284,33 @@ export class VideosService {
     };
 
     return data;
+  }
+
+  async updateVideo(updateVideo: UpdateVideoDto, id: string) {
+    const findVideo = await this.db.prisma.video.update({
+      where: { id: id },
+      data: {
+        title: updateVideo.title,
+        description: updateVideo.description,
+        visibility: updateVideo.visibility,
+        tags: updateVideo.tags,
+      },
+    });
+
+    if (!findVideo) throw new ConflictException('No such video ID exists.');
+
+    return {
+      message: 'Video updated.',
+    };
+  }
+
+  async deleteVideo(id: string) {
+    const findVideo = await this.db.prisma.video.delete({ where: { id: id } });
+
+    if (!findVideo) throw new ConflictException('No such video ID exists.');
+
+    return {
+      message: 'Delete',
+    };
   }
 }

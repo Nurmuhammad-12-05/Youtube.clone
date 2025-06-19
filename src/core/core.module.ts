@@ -19,7 +19,7 @@ import VideoProcessingService from './video.processing.service';
       useFactory: (configService: ConfigService) => ({
         secret: configService.get('JWT_KEY'),
         signOptions: {
-          expiresIn: '1h',
+          expiresIn: '8h',
         },
       }),
       inject: [ConfigService],
