@@ -27,7 +27,6 @@ import { RoleGuard } from 'src/core/guards/role.guard';
 import { VideoOwnerGuard } from 'src/core/guards/video.owner.guard';
 
 @Controller('/videos')
-@SetMetadata('isPublic', true)
 export class VideosController {
   constructor(private readonly videoService: VideosService) {}
 
