@@ -1,9 +1,11 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Global, Module } from '@nestjs/common';
 import { DatabaseModule } from './databases/database.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { ResendModule } from 'nestjs-resend';
+import VideoProcessingService from './video.processing.service';
 
+@Global()
 @Module({
   imports: [
     DatabaseModule,
@@ -30,5 +32,7 @@ import { ResendModule } from 'nestjs-resend';
       inject: [ConfigService],
     }) as DynamicModule,
   ],
+  providers: [VideoProcessingService],
+  exports: [VideoProcessingService],
 })
 export class CoreModule {}

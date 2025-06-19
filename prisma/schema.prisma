@@ -45,21 +45,6 @@ model User {
 
 
 
-enum VideoStatus {
-  UPLOADING
-  PROCESSING
-  PUBLISHED
-  PRIVATE
-  UNILISTED
-  DELETED
-}
-
-enum Visibility {
-  PUBLIC
-  UNLISTED
-  PRIVATE
-}
-
 model Video {
   id String @id @default(uuid())
   title String
@@ -68,13 +53,18 @@ model Video {
   videoUrl String
   duration Int
   fileSize BigInt 
+  hasAudio Boolean @default(true)
   resolution String
+  tags      String[]
+  category  String?
+  availableQualities String[]
   status VideoStatus @default(PROCESSING)
   visibility Visibility @default(PUBLIC)
   viewsCount BigInt @default(0)
   likesCount Int @default(0)
   dislikesCount Int @default(0)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   authorId String
   author User @relation(fields: [authorId],references: [id],onDelete: Cascade)
@@ -85,6 +75,20 @@ model Video {
   @@map("videos")
 }
 
+enum VideoStatus {
+  UPLOADING
+  PROCESSING
+  PUBLISHED
+  PRIVATE
+  UNLISTED
+  DELETED
+}
+
+enum Visibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
 
 model Comment {
   id String @id @default(uuid())

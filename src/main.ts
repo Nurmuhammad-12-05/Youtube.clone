@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpException, ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import { BigIntInterceptor } from './core/interceptors/bigint.interceptor';
 
 async function bootstrap() {
   try {
@@ -12,6 +13,8 @@ async function bootstrap() {
     app.useGlobalPipes(
       new ValidationPipe({ whitelist: true, transform: true }),
     );
+
+    app.useGlobalInterceptors(new BigIntInterceptor());
 
     app.use(cookieParser());
 

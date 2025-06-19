@@ -11,9 +11,28 @@ import { SubscriptionsModule } from './modules/subscriptions/subscriptions.modul
 import { PlaylistModule } from './modules/playlist/playlist.module';
 import { LikesModule } from './modules/likes/likes.module';
 import { ProfileModule } from './modules/profile/profile.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { ChannelsModule } from './modules/channels/channels.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 @Module({
-  imports: [CoreModule, AuthModule, UsersModule, VideosModule, CommentsModule, SubscriptionsModule, PlaylistModule, LikesModule, ProfileModule],
+  imports: [
+    CoreModule,
+    AuthModule,
+    UsersModule,
+    VideosModule,
+    CommentsModule,
+    SubscriptionsModule,
+    PlaylistModule,
+    LikesModule,
+    ProfileModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
+    }),
+    ChannelsModule,
+    AnalyticsModule,
+  ],
   providers: [
     {
       provide: APP_INTERCEPTOR,
