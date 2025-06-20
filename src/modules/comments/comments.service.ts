@@ -1,4 +1,107 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/core/databases/prisma.service';
+import { CreateCommentDto } from './dto/creatw.comment';
+import { QueryCommentsDto } from './dto/query.comment';
 
 @Injectable()
-export class CommentsService {}
+export class CommentsService {
+  constructor(private readonly db: PrismaService) {}
+
+  async addComment(videoId: string, userId: string, dto: CreateCommentDto) {
+    const video = await this.db.prisma.video.findUnique({
+      where: { id: videoId },
+    });
+
+    if (!video) {
+      throw new NotFoundException('Video not found');
+    }
+
+    const user = await this.db.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const newComment = await this.db.prisma.comment.create({
+      data: {
+        content: dto.content,
+        authorId: userId,
+        videoId,
+      },
+    });
+
+    return newComment;
+  }
+
+  async getComments(videoId: string, query: QueryCommentsDto) {
+    const limit = parseInt(query.limit as string) || 20;
+    const page = parseInt(query.page as string) || 1;
+    const skip = (page - 1) * limit;
+
+    let orderBy: any;
+
+    switch (query.sort) {
+      case 'new':
+        orderBy = { createdAt: 'desc' };
+        break;
+      case 'old':
+        orderBy = { createdAt: 'asc' };
+        break;
+      case 'top':
+      default:
+        orderBy = { likesCount: 'desc' };
+        break;
+    }
+
+    const [comments, totalComments] = await this.db.prisma.$transaction([
+      this.db.prisma.comment.findMany({
+        where: { videoId },
+        skip,
+        take: limit,
+        orderBy,
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              avatar: true,
+            },
+          },
+        },
+      }),
+      this.db.prisma.comment.count({ where: { videoId } }),
+    ]);
+
+    const formatted = await Promise.all(
+      comments.map(async (comment: any) => {
+        const dislikesCount = await this.db.prisma.like.count({
+          where: {
+            commentId: comment.id,
+            type: 'DISLIKE',
+          },
+        });
+
+        return {
+          id: comment.id,
+          content: comment.content,
+          likesCount: comment.likesCount,
+          dislikesCount,
+          isPinned: false,
+          createdAt: comment.createdAt,
+          author: comment.author,
+        };
+      }),
+    );
+
+    return {
+      success: true,
+      data: {
+        comments: formatted,
+        totalComments,
+        hasMore: skip + limit < totalComments,
+      },
+    };
+  }
+}

@@ -8,17 +8,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentsController = void 0;
 const common_1 = require("@nestjs/common");
 const comments_service_1 = require("./comments.service");
+const role_guard_1 = require("../../core/guards/role.guard");
+const creatw_comment_1 = require("./dto/creatw.comment");
+const query_comment_1 = require("./dto/query.comment");
 let CommentsController = class CommentsController {
     commentsService;
     constructor(commentsService) {
         this.commentsService = commentsService;
     }
+    async addComment(videoId, dto, req) {
+        const userId = req['userId'];
+        return this.commentsService.addComment(videoId, userId, dto);
+    }
+    async getComments(videoId, query) {
+        return this.commentsService.getComments(videoId, query);
+    }
 };
 exports.CommentsController = CommentsController;
+__decorate([
+    (0, common_1.Post)('/videos/:videoId/comments'),
+    (0, common_1.UseGuards)(role_guard_1.RoleGuard),
+    (0, common_1.SetMetadata)('role', ['USER']),
+    __param(0, (0, common_1.Param)('videoId')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, creatw_comment_1.CreateCommentDto, Object]),
+    __metadata("design:returntype", Promise)
+], CommentsController.prototype, "addComment", null);
+__decorate([
+    (0, common_1.Get)('/videos/:videoId/comments'),
+    __param(0, (0, common_1.Param)('videoId')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, query_comment_1.QueryCommentsDto]),
+    __metadata("design:returntype", Promise)
+], CommentsController.prototype, "getComments", null);
 exports.CommentsController = CommentsController = __decorate([
     (0, common_1.Controller)('comments'),
     __metadata("design:paramtypes", [comments_service_1.CommentsService])
