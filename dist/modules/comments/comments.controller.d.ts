@@ -11,6 +11,7 @@ export declare class CommentsController {
         likesCount: number;
         authorId: string;
         content: string;
+        isPinned: boolean;
         videoId: string;
     }>;
     getComments(videoId: string, query: QueryCommentsDto): Promise<{
@@ -28,5 +29,9 @@ export declare class CommentsController {
             totalComments: number;
             hasMore: boolean;
         };
+    }>;
+    togglePinComment(commentId: string, req: Request): Promise<{
+        success: boolean;
+        message: string;
     }>;
 }

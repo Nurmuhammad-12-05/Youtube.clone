@@ -46,7 +46,7 @@ export class AuthController {
     const { token, user } = await this.authService.register(registerAuthDto);
 
     res.cookie('token', token, {
-      maxAge: 1.1 * 3600 * 1000,
+      maxAge: 8.1 * 3600 * 1000,
       httpOnly: true,
     });
 
@@ -75,7 +75,7 @@ export class AuthController {
     const { token, user } = await this.authService.loginCode(verifyOtpDto);
 
     res.cookie('token', token, {
-      maxAge: 1.1 * 3600 * 1000,
+      maxAge: 8.1 * 3600 * 1000,
       httpOnly: true,
     });
 

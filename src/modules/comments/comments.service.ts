@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/core/databases/prisma.service';
 import { CreateCommentDto } from './dto/creatw.comment';
 import { QueryCommentsDto } from './dto/query.comment';
@@ -102,6 +106,39 @@ export class CommentsService {
         totalComments,
         hasMore: skip + limit < totalComments,
       },
+    };
+  }
+
+  async togglePinComment(commentId: string, userId: string) {
+    const comment = await this.db.prisma.comment.findUnique({
+      where: { id: commentId },
+      include: { video: true },
+    });
+
+    if (!comment) throw new NotFoundException('Comment not found');
+
+    const video = await this.db.prisma.video.findUnique({
+      where: { id: comment.videoId },
+    });
+
+    console.log(video, userId);
+
+    if (!video || video.authorId !== userId) {
+      throw new ForbiddenException('Only video author can pin/unpin comments');
+    }
+
+    const updatedComment = await this.db.prisma.comment.update({
+      where: { id: commentId },
+      data: {
+        isPinned: !comment.isPinned,
+      },
+    });
+
+    return {
+      success: true,
+      message: updatedComment.isPinned
+        ? 'Comment pinned successfully'
+        : 'Comment unpinned successfully',
     };
   }
 }

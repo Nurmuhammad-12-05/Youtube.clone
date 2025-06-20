@@ -38,7 +38,7 @@ let AuthController = class AuthController {
     async register(registerAuthDto, res) {
         const { token, user } = await this.authService.register(registerAuthDto);
         res.cookie('token', token, {
-            maxAge: 1.1 * 3600 * 1000,
+            maxAge: 8.1 * 3600 * 1000,
             httpOnly: true,
         });
         return {
@@ -54,7 +54,7 @@ let AuthController = class AuthController {
     async loginCode(verifyOtpDto, res) {
         const { token, user } = await this.authService.loginCode(verifyOtpDto);
         res.cookie('token', token, {
-            maxAge: 1.1 * 3600 * 1000,
+            maxAge: 8.1 * 3600 * 1000,
             httpOnly: true,
         });
         return {

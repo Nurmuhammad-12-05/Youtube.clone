@@ -100,6 +100,7 @@ model Comment {
   content String
   likesCount Int @default(0)
   createdAt DateTime @default(now())
+  isPinned   Boolean  @default(false)
 
   authorId String
   author User @relation(fields: [authorId],references: [id],onDelete: Cascade)

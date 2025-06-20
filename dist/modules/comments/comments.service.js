@@ -100,6 +100,33 @@ let CommentsService = class CommentsService {
             },
         };
     }
+    async togglePinComment(commentId, userId) {
+        const comment = await this.db.prisma.comment.findUnique({
+            where: { id: commentId },
+            include: { video: true },
+        });
+        if (!comment)
+            throw new common_1.NotFoundException('Comment not found');
+        const video = await this.db.prisma.video.findUnique({
+            where: { id: comment.videoId },
+        });
+        console.log(video, userId);
+        if (!video || video.authorId !== userId) {
+            throw new common_1.ForbiddenException('Only video author can pin/unpin comments');
+        }
+        const updatedComment = await this.db.prisma.comment.update({
+            where: { id: commentId },
+            data: {
+                isPinned: !comment.isPinned,
+            },
+        });
+        return {
+            success: true,
+            message: updatedComment.isPinned
+                ? 'Comment pinned successfully'
+                : 'Comment unpinned successfully',
+        };
+    }
 };
 exports.CommentsService = CommentsService;
 exports.CommentsService = CommentsService = __decorate([

@@ -3,7 +3,9 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
+  Put,
   Query,
   Req,
   SetMetadata,
@@ -38,5 +40,13 @@ export class CommentsController {
     @Query() query: QueryCommentsDto,
   ) {
     return this.commentsService.getComments(videoId, query);
+  }
+
+  @Put(':id/pin')
+  @UseGuards(RoleGuard)
+  @SetMetadata('role', ['USER'])
+  async togglePinComment(@Param('id') commentId: string, @Req() req: Request) {
+    const userId = req['userId'];
+    return this.commentsService.togglePinComment(commentId, userId);
   }
 }

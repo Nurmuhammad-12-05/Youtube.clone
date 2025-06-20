@@ -30,6 +30,10 @@ let CommentsController = class CommentsController {
     async getComments(videoId, query) {
         return this.commentsService.getComments(videoId, query);
     }
+    async togglePinComment(commentId, req) {
+        const userId = req['userId'];
+        return this.commentsService.togglePinComment(commentId, userId);
+    }
 };
 exports.CommentsController = CommentsController;
 __decorate([
@@ -51,6 +55,16 @@ __decorate([
     __metadata("design:paramtypes", [String, query_comment_1.QueryCommentsDto]),
     __metadata("design:returntype", Promise)
 ], CommentsController.prototype, "getComments", null);
+__decorate([
+    (0, common_1.Put)(':id/pin'),
+    (0, common_1.UseGuards)(role_guard_1.RoleGuard),
+    (0, common_1.SetMetadata)('role', ['USER']),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], CommentsController.prototype, "togglePinComment", null);
 exports.CommentsController = CommentsController = __decorate([
     (0, common_1.Controller)('comments'),
     __metadata("design:paramtypes", [comments_service_1.CommentsService])
