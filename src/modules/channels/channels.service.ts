@@ -151,14 +151,6 @@ export class ChannelsService {
 
     if (!user) throw new NotFoundException('User not found');
 
-    const filePath = path.join('uploads', 'banerimag', 'pubg.jpg');
-
-    const normalizedPath = filePath.replace(/\\/g, '/');
-
-    const channelBanner = `http://localhost:4000/channel/banner/${normalizedPath}`;
-
-    data.channelBanner = channelBanner;
-
     const updated = await this.db.prisma.user.update({
       where: { id: userId },
       data: {

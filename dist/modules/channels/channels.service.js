@@ -8,15 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChannelsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../core/databases/prisma.service");
 const client_1 = require("@prisma/client");
-const path_1 = __importDefault(require("path"));
 let ChannelsService = class ChannelsService {
     db;
     constructor(db) {
@@ -142,10 +138,6 @@ let ChannelsService = class ChannelsService {
         });
         if (!user)
             throw new common_1.NotFoundException('User not found');
-        const filePath = path_1.default.join('uploads', 'banerimag', 'pubg.jpg');
-        const normalizedPath = filePath.replace(/\\/g, '/');
-        const channelBanner = `http://localhost:4000/channel/banner/${normalizedPath}`;
-        data.channelBanner = channelBanner;
         const updated = await this.db.prisma.user.update({
             where: { id: userId },
             data: {
