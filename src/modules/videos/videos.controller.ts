@@ -25,6 +25,8 @@ import { CreateVideoDto } from './dto/create.video';
 import { UpdateVideoDto } from './dto/update.video';
 import { RoleGuard } from 'src/core/guards/role.guard';
 import { VideoOwnerGuard } from 'src/core/guards/video.owner.guard';
+import { GetFeedDto } from './dto/video.feed';
+import { CreateViewDto } from './dto/create.view';
 
 @Controller('/videos')
 export class VideosController {
@@ -116,5 +118,37 @@ export class VideosController {
   @SetMetadata('role', ['USER', 'ADMIN', 'SUPERADMIN'])
   async deleteVideo(@Param('id') id: string) {
     return await this.videoService.deleteVideo(id);
+  }
+
+  @Get('/video/feed')
+  @UseGuards(RoleGuard)
+  @SetMetadata('role', ['USER', 'ADMIN', 'SUPERADMIN'])
+  async getFeed(@Query() query: GetFeedDto) {
+    return this.videoService.getFeed(query);
+  }
+
+  @Post(':id/view')
+  @UseGuards(RoleGuard)
+  @SetMetadata('role', ['USER'])
+  async recordView(
+    @Param('id') videoId: string,
+    @Body() dto: CreateViewDto,
+    @Req() req: Request,
+  ) {
+    const userId = req['userId'];
+
+    return this.videoService.recordView(videoId, dto, userId);
+  }
+
+  @Get(':id/analytics')
+  @UseGuards(VideoOwnerGuard)
+  async getVideoAnalytics(
+    @Param('id') videoId: string,
+    @Query('timeframe') timeframe = '7d',
+    @Req() req: Request,
+  ) {
+    const userId = req['userId'];
+
+    return this.videoService.getAnalytics(videoId, timeframe, userId);
   }
 }

@@ -18,6 +18,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const video_processing_service_1 = __importDefault(require("../../core/video.processing.service"));
 const prisma_service_1 = require("../../core/databases/prisma.service");
+const video_feed_1 = require("./dto/video.feed");
 let VideosService = class VideosService {
     videoProcessingService;
     db;
@@ -250,6 +251,190 @@ let VideosService = class VideosService {
         return {
             message: 'Delete',
         };
+    }
+    async getFeed(opts) {
+        const { limit, page, category, duration, sort } = opts;
+        const where = { visibility: 'PUBLIC', status: 'PUBLISHED' };
+        if (category)
+            where.category = category;
+        if (duration) {
+            if (duration === video_feed_1.DurationEnum.short)
+                where.duration = { lt: 240 };
+            if (duration === video_feed_1.DurationEnum.medium)
+                where.duration = { gte: 240, lte: 1200 };
+            if (duration === video_feed_1.DurationEnum.long)
+                where.duration = { gt: 1200 };
+        }
+        let orderBy = { createdAt: 'desc' };
+        switch (sort) {
+            case 'popular':
+                orderBy = { likesCount: 'desc' };
+                break;
+            case 'newest':
+                orderBy = { createdAt: 'desc' };
+                break;
+            case 'oldest':
+                orderBy = { createdAt: 'asc' };
+                break;
+            case 'most_viewed':
+                orderBy = { viewsCount: 'desc' };
+                break;
+        }
+        const videos = await this.db.prisma.video.findMany({
+            where,
+            orderBy,
+            skip: (page - 1) * limit,
+            take: limit,
+            select: {
+                id: true,
+                title: true,
+                thumbnail: true,
+                duration: true,
+                viewsCount: true,
+                likesCount: true,
+                createdAt: true,
+                category: true,
+                author: {
+                    select: {
+                        id: true,
+                        username: true,
+                        avatar: true,
+                        channelName: true,
+                    },
+                },
+            },
+        });
+        return videos;
+    }
+    async recordView(videoId, dto, userId) {
+        const video = await this.db.prisma.video.findUnique({
+            where: { id: videoId },
+        });
+        if (!video)
+            throw new common_1.NotFoundException('Video topilmadi');
+        await this.db.prisma.view.create({
+            data: {
+                videoId,
+                userId,
+                watchTime: dto.watchTime,
+                quality: dto.quality,
+                device: dto.device,
+                location: dto.location,
+            },
+        });
+        if (userId) {
+            await this.db.prisma.watchHistory.upsert({
+                where: {
+                    userId_videoId: {
+                        userId,
+                        videoId,
+                    },
+                },
+                update: {
+                    watchTime: dto.watchTime,
+                    watchedAt: new Date(),
+                },
+                create: {
+                    userId,
+                    videoId,
+                    watchTime: dto.watchTime,
+                },
+            });
+        }
+        await this.db.prisma.video.update({
+            where: { id: videoId },
+            data: {
+                viewsCount: { increment: 1 },
+            },
+        });
+        return { message: 'View recorded' };
+    }
+    async getAnalytics(videoId, timeframe, userId) {
+        const video = await this.db.prisma.video.findUnique({
+            where: { id: videoId },
+            select: { authorId: true },
+        });
+        if (!video || video.authorId !== userId) {
+            throw new common_1.ForbiddenException('Siz bu videoning egasi emassiz');
+        }
+        const now = new Date();
+        const fromDate = new Date();
+        const days = parseInt(timeframe.replace('d', '')) || 7;
+        fromDate.setDate(now.getDate() - days);
+        const views = await this.db.prisma.view.findMany({
+            where: {
+                videoId,
+                createdAt: { gte: fromDate },
+            },
+        });
+        const totalViews = views.length;
+        const totalWatchTime = views.reduce((sum, v) => sum + v.watchTime, 0);
+        const averageViewDuration = totalViews
+            ? Math.round(totalWatchTime / totalViews)
+            : 0;
+        const viewsByDay = this.groupByDay(views);
+        const viewsByCountry = this.groupByCountry(views);
+        const deviceBreakdown = this.groupByDevice(views);
+        const retention = this.generateRetentionChart(views);
+        return {
+            success: true,
+            data: {
+                totalViews,
+                totalWatchTime,
+                averageViewDuration,
+                viewsByDay,
+                viewsByCountry,
+                deviceBreakdown,
+                retention,
+            },
+        };
+    }
+    groupByDay(views) {
+        const map = new Map();
+        for (const view of views) {
+            const date = view.createdAt.toISOString().split('T')[0];
+            if (!map.has(date)) {
+                map.set(date, { views: 0, watchTime: 0 });
+            }
+            map.get(date).views++;
+            map.get(date).watchTime += view.watchTime;
+        }
+        return Array.from(map.entries()).map(([date, data]) => ({
+            date,
+            views: data.views,
+            watchTime: data.watchTime,
+        }));
+    }
+    groupByCountry(views) {
+        const map = new Map();
+        for (const view of views) {
+            const country = view.location;
+            map.set(country, (map.get(country) || 0) + 1);
+        }
+        return Array.from(map.entries()).map(([country, views]) => ({
+            country,
+            views,
+        }));
+    }
+    groupByDevice(views) {
+        const total = views.length;
+        const count = {};
+        for (const view of views) {
+            const device = view.device.toLowerCase();
+            count[device] = (count[device] || 0) + 1;
+        }
+        const breakdown = {};
+        for (const device in count) {
+            breakdown[device] = Math.round((count[device] / total) * 100);
+        }
+        return breakdown;
+    }
+    generateRetentionChart(views) {
+        return [
+            { time: 0, percentage: 100 },
+            { time: 30, percentage: 85 },
+            { time: 60, percentage: 70 },
+        ];
     }
 };
 exports.VideosService = VideosService;

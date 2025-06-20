@@ -2,6 +2,8 @@ import { VideosService } from './videos.service';
 import { Request, Response } from 'express';
 import { CreateVideoDto } from './dto/create.video';
 import { UpdateVideoDto } from './dto/update.video';
+import { GetFeedDto } from './dto/video.feed';
+import { CreateViewDto } from './dto/create.view';
 export declare class VideosController {
     private readonly videoService;
     constructor(videoService: VideosService);
@@ -65,5 +67,46 @@ export declare class VideosController {
     }>;
     deleteVideo(id: string): Promise<{
         message: string;
+    }>;
+    getFeed(query: GetFeedDto): Promise<{
+        id: string;
+        title: string;
+        thumbnail: string | null;
+        duration: number;
+        category: string | null;
+        viewsCount: bigint;
+        likesCount: number;
+        createdAt: Date;
+        author: {
+            id: string;
+            username: string;
+            avatar: string | null;
+            channelName: string | null;
+        };
+    }[]>;
+    recordView(videoId: string, dto: CreateViewDto, req: Request): Promise<{
+        message: string;
+    }>;
+    getVideoAnalytics(videoId: string, timeframe: string | undefined, req: Request): Promise<{
+        success: boolean;
+        data: {
+            totalViews: number;
+            totalWatchTime: number;
+            averageViewDuration: number;
+            viewsByDay: {
+                date: string;
+                views: number;
+                watchTime: number;
+            }[];
+            viewsByCountry: {
+                country: string;
+                views: number;
+            }[];
+            deviceBreakdown: Record<string, number>;
+            retention: {
+                time: number;
+                percentage: number;
+            }[];
+        };
     }>;
 }

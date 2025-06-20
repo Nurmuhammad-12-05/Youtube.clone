@@ -26,6 +26,8 @@ const create_video_1 = require("./dto/create.video");
 const update_video_1 = require("./dto/update.video");
 const role_guard_1 = require("../../core/guards/role.guard");
 const video_owner_guard_1 = require("../../core/guards/video.owner.guard");
+const video_feed_1 = require("./dto/video.feed");
+const create_view_1 = require("./dto/create.view");
 let VideosController = class VideosController {
     videoService;
     constructor(videoService) {
@@ -57,6 +59,17 @@ let VideosController = class VideosController {
     }
     async deleteVideo(id) {
         return await this.videoService.deleteVideo(id);
+    }
+    async getFeed(query) {
+        return this.videoService.getFeed(query);
+    }
+    async recordView(videoId, dto, req) {
+        const userId = req['userId'];
+        return this.videoService.recordView(videoId, dto, userId);
+    }
+    async getVideoAnalytics(videoId, timeframe = '7d', req) {
+        const userId = req['userId'];
+        return this.videoService.getAnalytics(videoId, timeframe, userId);
     }
 };
 exports.VideosController = VideosController;
@@ -129,6 +142,36 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], VideosController.prototype, "deleteVideo", null);
+__decorate([
+    (0, common_1.Get)('/video/feed'),
+    (0, common_1.UseGuards)(role_guard_1.RoleGuard),
+    (0, common_1.SetMetadata)('role', ['USER', 'ADMIN', 'SUPERADMIN']),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [video_feed_1.GetFeedDto]),
+    __metadata("design:returntype", Promise)
+], VideosController.prototype, "getFeed", null);
+__decorate([
+    (0, common_1.Post)(':id/view'),
+    (0, common_1.UseGuards)(role_guard_1.RoleGuard),
+    (0, common_1.SetMetadata)('role', ['USER']),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, create_view_1.CreateViewDto, Object]),
+    __metadata("design:returntype", Promise)
+], VideosController.prototype, "recordView", null);
+__decorate([
+    (0, common_1.Get)(':id/analytics'),
+    (0, common_1.UseGuards)(video_owner_guard_1.VideoOwnerGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)('timeframe')),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], VideosController.prototype, "getVideoAnalytics", null);
 exports.VideosController = VideosController = __decorate([
     (0, common_1.Controller)('/videos'),
     __metadata("design:paramtypes", [videos_service_1.VideosService])

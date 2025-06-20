@@ -3,6 +3,9 @@ import VideoProcessingService from 'src/core/video.processing.service';
 import { CreateVideoDto } from './dto/create.video';
 import { PrismaService } from 'src/core/databases/prisma.service';
 import { UpdateVideoDto } from './dto/update.video';
+import { GetFeedDto } from './dto/video.feed';
+import { View } from '@prisma/client';
+import { CreateViewDto } from './dto/create.view';
 export declare class VideosService {
     private videoProcessingService;
     private readonly db;
@@ -68,4 +71,59 @@ export declare class VideosService {
     deleteVideo(id: string): Promise<{
         message: string;
     }>;
+    getFeed(opts: GetFeedDto): Promise<{
+        id: string;
+        createdAt: Date;
+        title: string;
+        thumbnail: string | null;
+        duration: number;
+        category: string | null;
+        viewsCount: bigint;
+        likesCount: number;
+        author: {
+            id: string;
+            username: string;
+            avatar: string | null;
+            channelName: string | null;
+        };
+    }[]>;
+    recordView(videoId: string, dto: CreateViewDto, userId?: string): Promise<{
+        message: string;
+    }>;
+    getAnalytics(videoId: string, timeframe: string, userId: string): Promise<{
+        success: boolean;
+        data: {
+            totalViews: number;
+            totalWatchTime: number;
+            averageViewDuration: number;
+            viewsByDay: {
+                date: string;
+                views: number;
+                watchTime: number;
+            }[];
+            viewsByCountry: {
+                country: string;
+                views: number;
+            }[];
+            deviceBreakdown: Record<string, number>;
+            retention: {
+                time: number;
+                percentage: number;
+            }[];
+        };
+    }>;
+    groupByDay(views: View[]): {
+        date: string;
+        views: number;
+        watchTime: number;
+    }[];
+    groupByCountry(views: View[]): {
+        country: string;
+        views: number;
+    }[];
+    groupByDevice(views: View[]): Record<string, number>;
+    generateRetentionChart(views: View[]): {
+        time: number;
+        percentage: number;
+    }[];
 }
