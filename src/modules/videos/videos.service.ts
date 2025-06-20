@@ -380,6 +380,7 @@ export class VideosService {
     const video = await this.db.prisma.video.findUnique({
       where: { id: videoId },
     });
+
     if (!video) throw new NotFoundException('Video topilmadi');
 
     await this.db.prisma.view.create({
@@ -434,8 +435,11 @@ export class VideosService {
     }
 
     const now = new Date();
+
     const fromDate = new Date();
+
     const days = parseInt(timeframe.replace('d', '')) || 7;
+
     fromDate.setDate(now.getDate() - days);
 
     const views = await this.db.prisma.view.findMany({
@@ -446,7 +450,9 @@ export class VideosService {
     });
 
     const totalViews = views.length;
+
     const totalWatchTime = views.reduce((sum, v) => sum + v.watchTime, 0);
+
     const averageViewDuration = totalViews
       ? Math.round(totalWatchTime / totalViews)
       : 0;
@@ -478,10 +484,13 @@ export class VideosService {
 
     for (const view of views) {
       const date = view.createdAt.toISOString().split('T')[0];
+
       if (!map.has(date)) {
         map.set(date, { views: 0, watchTime: 0 });
       }
+
       map.get(date)!.views++;
+
       map.get(date)!.watchTime += view.watchTime;
     }
 

@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubscriptionsController = void 0;
 const common_1 = require("@nestjs/common");
@@ -17,10 +20,34 @@ let SubscriptionsController = class SubscriptionsController {
     constructor(subscriptionsService) {
         this.subscriptionsService = subscriptionsService;
     }
+    async subscribe(channelId, req) {
+        const userId = req['userid'];
+        return await this.subscriptionsService.subscribe(userId, channelId);
+    }
+    async unsubscribe(channelId, req) {
+        const userId = req['userid'];
+        return await this.subscriptionsService.unsubscribe(userId, channelId);
+    }
 };
 exports.SubscriptionsController = SubscriptionsController;
+__decorate([
+    (0, common_1.Post)(':userId/subscribe'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], SubscriptionsController.prototype, "subscribe", null);
+__decorate([
+    (0, common_1.Delete)(':userId/subscribe'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], SubscriptionsController.prototype, "unsubscribe", null);
 exports.SubscriptionsController = SubscriptionsController = __decorate([
-    (0, common_1.Controller)('subscriptions'),
+    (0, common_1.Controller)('channels'),
     __metadata("design:paramtypes", [subscriptions_service_1.SubscriptionsService])
 ], SubscriptionsController);
 //# sourceMappingURL=subscriptions.controller.js.map

@@ -70,13 +70,13 @@ export declare class VideosController {
     }>;
     getFeed(query: GetFeedDto): Promise<{
         id: string;
+        createdAt: Date;
         title: string;
         thumbnail: string | null;
         duration: number;
         category: string | null;
         viewsCount: bigint;
         likesCount: number;
-        createdAt: Date;
         author: {
             id: string;
             username: string;

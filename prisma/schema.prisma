@@ -23,6 +23,7 @@ model User {
   lastName String @db.VarChar(50)
   avatar String?
   channelName String?
+  channelBanner String?
   channelDescription String?
   role Role @default(USER)
   is_email_verified Boolean @default(false)
