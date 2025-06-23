@@ -8,7 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: deploy to server
+      - name: Deploy to server
         env:
           SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
