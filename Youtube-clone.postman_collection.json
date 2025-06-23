@@ -1,0 +1,1732 @@
+{
+	"info": {
+		"_postman_id": "fe6a1990-fabc-4ecd-8838-0447ccf0ea48",
+		"name": "Youtube-clone",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42650334"
+	},
+	"item": [
+		{
+			"name": "email-verify",
+			"item": [
+				{
+					"name": "create-email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ashuraliyevnurmuhammad16@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/users/create-user-email/2569357d-1397-4cd4-8d29-91d3485a0a39",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"users",
+								"create-user-email",
+								"2569357d-1397-4cd4-8d29-91d3485a0a39"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send-email-link",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ashuraliyevnurmuhammad16@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/users/email/send-verifycation-link",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"users",
+								"email",
+								"send-verifycation-link"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify-email",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ashuraliyevnurmuhammad16@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/users/user/verify-email?token=d2a35a8c-02aa-4d3b-a811-37a3f37f68cd",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"users",
+								"user",
+								"verify-email"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "d2a35a8c-02aa-4d3b-a811-37a3f37f68cd"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "auth-register",
+					"item": [
+						{
+							"name": "send-otp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_number\" : \"+998903641179\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/auth/send-otp",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"auth",
+										"send-otp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "verify-otp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_number\": \"+998903641179\",\r\n    \"code\": \"315357\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/auth/verify-otp",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"auth",
+										"verify-otp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_number\" : \"+998903641179\",\r\n    \"password\": \"SecurePass123!\",\r\n    \"username\": \"hakim_pubg\",\r\n    \"firstName\": \"Hakimtoy\",\r\n    \"lastName\": \"Hakimov\",\r\n    \"session_token\": \"993dba2d-58f9-4471-b049-aca118c27ff1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/auth/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "auth-login",
+					"item": [
+						{
+							"name": "login-phone-password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_number\": \"+998903641179\",\r\n    \"password\": \"SecurePass123!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/auth/login-phone-password",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"auth",
+										"login-phone-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login-phone-number",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_number\" : \"+998903029081\",\r\n    \"code\": \"771304\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/auth/login-check-code",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"auth",
+										"login-check-code"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login-phone-number",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone_number\": \"+998903029081\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/auth/login-phone-number",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"auth",
+										"login-phone-number"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-user-role",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/auth/admin/f86022c0-3f08-4971-a5c0-8c9f8df20c15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"admin",
+								"f86022c0-3f08-4971-a5c0-8c9f8df20c15"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "video",
+			"item": [
+				{
+					"name": "video-upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/n68ut83cpt00i03b62y2.mp4"
+								},
+								{
+									"key": "title",
+									"value": "My Awesome Video",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "asghdjafdgsfhhgfdfgshdjfjhtrerwetrhtjrerthjgfg",
+									"type": "text"
+								},
+								{
+									"key": "authorId",
+									"value": "2569357d-1397-4cd4-8d29-91d3485a0a39",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/videos/upload",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"videos",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "video-stream",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Range",
+								"value": "bytes=0-1023",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22/stream?quality=720p",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+								"stream"
+							],
+							"query": [
+								{
+									"key": "quality",
+									"value": "720p"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "wacht-video-status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "video-details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-video",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Updated Video Title\",\r\n    \"description\": \"Updated description\",\r\n    \"visibility\": \"PUBLIC\",\r\n    \"tags\": [\r\n        \"updated\",\r\n        \"tags\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-video",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Updated Video Title\",\r\n    \"description\": \"Updated description\",\r\n    \"visibility\": \"PUBLIC\",\r\n    \"tags\": [\r\n        \"updated\",\r\n        \"tags\"\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/videos/f078030a-e427-48b1-ab7c-5e754fcdf4e3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"videos",
+								"f078030a-e427-48b1-ab7c-5e754fcdf4e3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "video-feed",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/videos/video/feed?limit=10&page=2&category=education&duration=medium&sort=most_viewed",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"videos",
+								"video",
+								"feed"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "category",
+									"value": "education"
+								},
+								{
+									"key": "duration",
+									"value": "medium"
+								},
+								{
+									"key": "sort",
+									"value": "most_viewed"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "video-view",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"watchTime\": 125,\r\n    \"quality\": \"720p\",\r\n    \"device\": \"mobile\",\r\n    \"location\": \"UZ\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22/view",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+								"view"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "video-analytics",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22/analytics?timeframe=7d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+								"analytics"
+							],
+							"query": [
+								{
+									"key": "timeframe",
+									"value": "7d"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Channel",
+			"item": [
+				{
+					"name": "channel-info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/channels/salim_kachoy",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"channels",
+								"salim_kachoy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "channel-videos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/channels/salim_kachoy/videos?limit=20&page=1&sort=newest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"channels",
+								"salim_kachoy",
+								"videos"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "newest"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-channel",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"channelName\": \"Salom_Pubg\",\r\n    \"channelDescription\": \"Salim pubg sevuchilar uchun juda foydali malumotlar yetkazib beradi.\",\r\n    \"channelBanner\": \"https://cdn.example.com/new-banner.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/channels/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"channels",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subscribe-unsubscribe",
+			"item": [
+				{
+					"name": "create-subscription-subscribe",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/subscriptions/channels/2569357d-1397-4cd4-8d29-91d3485a0a39/subscribe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"subscriptions",
+								"channels",
+								"2569357d-1397-4cd4-8d29-91d3485a0a39",
+								"subscribe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-subscription",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone_number\" : \"+998905603304\",\r\n    \"code\": \"152655\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/subscriptions/channels/2569357d-1397-4cd4-8d29-91d3485a0a39/subscribe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"subscriptions",
+								"channels",
+								"2569357d-1397-4cd4-8d29-91d3485a0a39",
+								"subscribe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subscriptions-limit-page",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/subscriptions/subscriptions?limit=20&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"subscriptions",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subscription-feed",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/subscriptions/feed?limit=20&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"subscriptions",
+								"feed"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments System",
+			"item": [
+				{
+					"name": "add-comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"Great video! Very helpful.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/comments/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"comments",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/comments/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22/comments?limit=20&page=1&sort=top",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"comments",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+								"comments"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "top"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put-unpin-comment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/comments/c1f5aa74-c55a-4f5a-bbfb-f046914f443b/pin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"comments",
+								"c1f5aa74-c55a-4f5a-bbfb-f046914f443b",
+								"pin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "like-dislike-comment",
+			"item": [
+				{
+					"name": "add-like-comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\": \"LIKE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/likes/comments/c1f5aa74-c55a-4f5a-bbfb-f046914f443b/like",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"likes",
+								"comments",
+								"c1f5aa74-c55a-4f5a-bbfb-f046914f443b",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE-like-comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone_number\" : \"+998905603304\",\r\n    \"code\": \"152655\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/likes/comments/c1f5aa74-c55a-4f5a-bbfb-f046914f443b/like",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"likes",
+								"comments",
+								"c1f5aa74-c55a-4f5a-bbfb-f046914f443b",
+								"like"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "get-profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/users/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/users/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-watch-history",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/users/me/history?limit=50&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"users",
+								"me",
+								"history"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cear-watch-history",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/users/me/history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"users",
+								"me",
+								"history"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "playlist",
+			"item": [
+				{
+					"name": "create-playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"My Favorite Videos\",\r\n  \"description\": \"Collection of my favorite content\",\r\n  \"visibility\": \"PUBLIC\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/playlists",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"playlists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-video-to-playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"videoId\": \"0eedfe0e-f4ac-4614-a08d-083d24ea1c22\",\r\n    \"position\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/playlists/a7c5c5a1-5919-425a-bb9c-b224896226a4/videos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"playlists",
+								"a7c5c5a1-5919-425a-bb9c-b224896226a4",
+								"videos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-playlist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/playlists/a7c5c5a1-5919-425a-bb9c-b224896226a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"playlists",
+								"a7c5c5a1-5919-425a-bb9c-b224896226a4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-user-playlists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/playlists/users/2569357d-1397-4cd4-8d29-91d3485a0a39/playlists?limit=20&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"playlists",
+								"users",
+								"2569357d-1397-4cd4-8d29-91d3485a0a39",
+								"playlists"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-playlist",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Klassik Musiqalar\",\r\n    \"description\": \"Men sevgan klassik asarlar to‘plami\",\r\n    \"visibility\": \"PRIVATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/playlists/a7c5c5a1-5919-425a-bb9c-b224896226a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"playlists",
+								"a7c5c5a1-5919-425a-bb9c-b224896226a4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove-video-from-playlist",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/playlists/06f29305-c2f9-46f3-bae3-dada3652d639/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"playlists",
+								"06f29305-c2f9-46f3-bae3-dada3652d639",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "search",
+			"item": [
+				{
+					"name": "get-search-suggestions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/search/suggestions?q=javascr",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"search",
+								"suggestions"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "javascr"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-recommended-videos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/search/recommendations?limit=20&page=1&videoId=0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"search",
+								"recommendations"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "videoId",
+									"value": "0eedfe0e-f4ac-4614-a08d-083d24ea1c22"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin-panel",
+			"item": [
+				{
+					"name": "get-dashboard-stats",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/admin/dashboard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"admin",
+								"dashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Moderate Content",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/admin/videos/pending?limit=20&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"admin",
+								"videos",
+								"pending"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Moderate Content",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/admin/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22/approve",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"admin",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Moderate Content",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/admin/videos/0eedfe0e-f4ac-4614-a08d-083d24ea1c22/reject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"admin",
+								"videos",
+								"0eedfe0e-f4ac-4614-a08d-083d24ea1c22",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Management",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/admin/users?limit=50&page=1&search=john&status=active",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"admin",
+								"users"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "search",
+									"value": "john"
+								},
+								{
+									"key": "status",
+									"value": "active"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Management",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/admin/users/75fc2243-7dc6-441f-968e-1aa3df1f5bfd/block",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"75fc2243-7dc6-441f-968e-1aa3df1f5bfd",
+								"block"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Management",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/Jk_laptops/OneDrive/Pictures/Saved Pictures/photo_2025-05-16_14-29-51.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/admin/users/75fc2243-7dc6-441f-968e-1aa3df1f5bfd/verify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"75fc2243-7dc6-441f-968e-1aa3df1f5bfd",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
