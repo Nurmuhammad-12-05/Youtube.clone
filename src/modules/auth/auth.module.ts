@@ -5,6 +5,7 @@ import { OtpService } from './otp.service';
 import { OtpSecurityService } from './otp.security.service';
 import { SmsService } from './sms.service';
 import { EmailOtpService } from './email.otp.service';
+import { ResendModule } from 'nestjs-resend';
 
 @Global()
 @Module({
@@ -18,4 +19,4 @@ import { EmailOtpService } from './email.otp.service';
   ],
   exports: [OtpService, OtpSecurityService, EmailOtpService],
 })
-export class AuthModule {}
+export class AuthModule { }
