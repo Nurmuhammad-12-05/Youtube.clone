@@ -14,7 +14,7 @@ import {
 @ApiTags('Likes') // Swagger UI'dagi bo‘lim nomi
 @Controller('likes')
 export class LikesController {
-  constructor(private readonly likesService: LikesService) {}
+  constructor(private readonly likesService: LikesService) { }
 
   // Domla bu API ham like uchun, ham dislike uchun!
   @Post('/comments/:id/like')
