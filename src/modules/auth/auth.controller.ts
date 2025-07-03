@@ -12,33 +12,50 @@ import {
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create.auth.dto';
 import { VerifyOtpDto } from './dto/verify.otp.dto';
-import e, { Response } from 'express';
 import { RegisterAuthDto } from './dto/register.dto';
 import { LoginPhoneAndPasswordDto } from './dto/login.phone.password.dto';
 import { LoginPhoneNumberDto } from './dto/login.phone.dto';
 import { RoleGuard } from 'src/core/guards/role.guard';
 import { Role } from '@prisma/client';
+import { Response } from 'express';
 
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiParam,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+
+@ApiTags('Auth') // Swaggerdagi bo'lim nomi
 @Controller('auth')
 @SetMetadata('isPublic', true)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/send-otp')
+  @ApiOperation({ summary: 'Telefon raqamga OTP kod yuborish' })
+  @ApiBody({ type: CreateAuthDto })
+  @ApiResponse({ status: 201, description: 'OTP yuborildi' })
   async sendOtpUser(@Body() createAuthDto: CreateAuthDto) {
     const response = await this.authService.sendOtpUser(createAuthDto);
-
     return response;
   }
 
   @Post('/verify-otp')
+  @ApiOperation({ summary: 'OTP kodni tekshirish' })
+  @ApiBody({ type: VerifyOtpDto })
+  @ApiResponse({ status: 200, description: 'Kod muvaffaqiyatli tasdiqlandi' })
   async verifyOtp(@Body() verifyOtpDto: VerifyOtpDto) {
     const result = await this.authService.verifyOtp(verifyOtpDto);
-
     return result;
   }
 
   @Post('/register')
+  @ApiOperation({ summary: 'Ro‘yxatdan o‘tish' })
+  @ApiBody({ type: RegisterAuthDto })
+  @ApiResponse({ status: 201, description: 'Foydalanuvchi muvaffaqiyatli ro‘yxatdan o‘tdi' })
   async register(
     @Body() registerAuthDto: RegisterAuthDto,
     @Res({ passthrough: true }) res: Response,
@@ -58,6 +75,9 @@ export class AuthController {
   }
 
   @Post('/login-phone-password')
+  @ApiOperation({ summary: 'Telefon raqam va parol orqali kirish' })
+  @ApiBody({ type: LoginPhoneAndPasswordDto })
+  @ApiResponse({ status: 200, description: 'Login muvaffaqiyatli amalga oshdi' })
   async loginWithPhoneAndPassword(
     @Body() loginhoneAndPassword: LoginPhoneAndPasswordDto,
   ) {
@@ -68,6 +88,9 @@ export class AuthController {
   }
 
   @Post('/login-check-code')
+  @ApiOperation({ summary: 'SMS kodi orqali tizimga kirish' })
+  @ApiBody({ type: VerifyOtpDto })
+  @ApiResponse({ status: 200, description: 'Login muvaffaqiyatli amalga oshdi (SMS orqali)' })
   async loginCode(
     @Body() verifyOtpDto: VerifyOtpDto,
     @Res({ passthrough: true }) res: Response,
@@ -87,6 +110,9 @@ export class AuthController {
   }
 
   @Post('/login-phone-number')
+  @ApiOperation({ summary: 'Telefon raqam orqali kirish' })
+  @ApiBody({ type: LoginPhoneNumberDto })
+  @ApiResponse({ status: 200, description: 'Login uchun SMS kod yuborildi' })
   async loginWithPhoneNumber(@Body() loginPhoneNumberDto: LoginPhoneNumberDto) {
     const response =
       await this.authService.loginWithPhoneNumber(loginPhoneNumberDto);
@@ -95,6 +121,8 @@ export class AuthController {
   }
 
   @Post('/logout')
+  @ApiOperation({ summary: 'Tizimdan chiqish' })
+  @ApiResponse({ status: 200, description: 'Logout muvaffaqiyatli amalga oshdi' })
   async logout(@Res({ passthrough: true }) response: Response) {
     try {
       response.setHeader(
@@ -114,6 +142,21 @@ export class AuthController {
   @UseGuards(RoleGuard)
   @SetMetadata('isAdmin', true)
   @SetMetadata('role', ['SUPERADMIN'])
+  @ApiOperation({ summary: 'Admin qo‘shish (faqat SUPERADMIN)' })
+  @ApiParam({ name: 'id', description: 'Foydalanuvchi IDsi' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        role: {
+          type: 'string',
+          example: 'ADMIN',
+        },
+      },
+    },
+  })
+  @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'Admin muvaffaqiyatli qo‘shildi' })
   async addAdmin(@Body('role') role: Role, @Param('id') id: string) {
     try {
       const admin = await this.authService.updateAdmin(role, id);
